@@ -1,0 +1,15 @@
+# Ignore Python virtual environment
+venv/
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore OS metadata
+.DS_Store
+
+# Ignore generated files and artifacts
+data/
+plots/
+*.pkl
+*.joblib
