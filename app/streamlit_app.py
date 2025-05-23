@@ -34,7 +34,7 @@ st.sidebar.header("Simulation Inputs")
 
 S0 = st.sidebar.slider("Initial Stock Price (S₀)", 10.0, 300.0, 100.0, step = 1.0)
 K = st.sidebar.slider("Strike Price (K)", 10.0, 300.0, 105.0, step = 1.0)
-T = st.sidebar.slider("Time to Expiry (Years)", 0.1, 5.0, 1.0, step = 0.5)
+T = st.sidebar.slider("Time to Expiry (Years)", 0.1, 5.0, 1.0, step = 0.1)
 r_percent = st.sidebar.slider("Risk-Free Rate (%)", 0.0, 10.0, 5.0, step = 0.1)
 r = r_percent / 100 
 
@@ -42,6 +42,20 @@ option_type = st.sidebar.radio("Option Type", ["call", "put"])
 market_price = st.sidebar.number_input("Observed Market Price", min_value = 0.0, value = 7.2, step = 0.1)
 N = st.sidebar.select_slider("Number of Simulations", options=[1000, 5000, 10000, 50000, 100000, 250000, 500000], value = 10000)
 use_sobol = st.sidebar.checkbox("Use Sobol Sampling?", value = False)
+
+st.sidebar.markdown("-----")
+
+with st.sidebar.expander("What do these inputs mean?"):
+    st.markdown(""" 
+                ### Input Glossary
+                - **S₀** — Current stock price (the value of the asset right now).
+                - **K** — Strike price (price agreed for buying/selling the asset).
+                - **T** — Time to maturity (in years).
+                - **r** — Risk-free interest rate (used to discount future value).
+                - **Market Price** — Actual observed price of the option in the market.
+                - **Simulations** — Number of Monte Carlo paths to run.
+                - **Sobol Sampling** — Use quasi-random numbers for faster convergence.
+                """)
 
 run = st.button("Run Simulation")
 
@@ -87,5 +101,24 @@ if run:
     
     delta_path = delta_compared_stock(K, T, r, sigma, N, option_type, use_sobol)
     st.image(delta_path, caption = "Delta vs Stock Price")
+    
+    st.markdown("-----")
+    
+    with st.expander("What does everything mean?"):
+        st.markdown(""" 
+                    ### Output Explained
+                    - **Implied Volatility (σ)** — The volatility that makes the Black-Scholes price match the observed market price.
+                    - **Option Price** — Your simulated fair value using Monte Carlo.
+                    - **Confidence Interval** — Range for the true option price with 95% confidence that it falls in this range.
+                    - **Delta** — How much the option price changes when the stock price changes.
+                    - **Vega** — How much the option price changes with a change in volatility.
+
+                    ### Plot Descriptions
+                    - **Terminal Price Histogram** — Distribution of final stock prices from simulations.
+                    - **Payoff Histogram** — Distribution of the option payoffs at expiry.
+                    - **Payoff vs Terminal Price** — Shows how payoff changes with the ending stock price.
+                    - **Delta vs Stock Price** — How Delta behaves across different stock prices.
+                    - **Convergence Plot** — Shows how simulation accuracy improves with more runs.
+                    """)
 
     

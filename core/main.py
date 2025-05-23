@@ -9,12 +9,19 @@ def bs_price(S, K, T, r, sigma, option_type = 'call'):
     if option_type == 'call':
         return S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
     else:
-        return K * np.exp(-r * T) * norm.cdf(d2) - S * norm.cdf(d1)
+        return K * np.exp(-r * T) * norm.cdf(-d2) - S * norm.cdf(-d1)
 
 def implied_volatility(S, K, T, r, option_price, option_type = 'call'):
+    def objective(sigma):
+        return bs_price(S, K, T, r, sigma, option_type) - option_price
+
     try:
-        return brentq(lambda sigma: bs_price(S, K, T, r, sigma, option_type) - option_price, 1e-6, 5)
-    except ValueError:
+        lower = objective(1e-6)
+        upper = objective(5)
+        if lower * upper > 0:
+            raise ValueError("BSM prices do not bracket market price.")
+        return brentq(objective, 1e-6, 5)
+    except Exception:
         return np.nan
 
 def simulate_terminal_prices(S0, r, sigma, T, N):
