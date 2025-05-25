@@ -27,8 +27,7 @@ These values estimate key sensitivities
 - Delta: Sensitivity to $S_0$
 - Vega: Sensitivity to $\sigma$
 
-## Application Features
-
+### Features
 - Adjustable parameters
 - Toggle for Sobol Sampling
 - Output: Implied Volatility, option price, 95% confidence interval, delta, vega
