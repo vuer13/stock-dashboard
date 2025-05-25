@@ -40,7 +40,7 @@ These values estimate key sensitivities
 ## Stock Screener
 This part of the project utilizes the Financial Modeling Prep (FMP) API by making batch API requests to obtain up to date stock prices based on key financial metrics the user wishes to obtain. Users can sort any column and filter based on their liking. At the end, they can download the filtered results into a CSV file. 
 
-### Requirements
+# Requirements
 Clone this repository to your local machine, activate the virtual environment (optional) and install requirements: 
 ```bash
 git clone https://github.com/vuer13/stock-dashboard.git
