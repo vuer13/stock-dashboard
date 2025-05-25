@@ -14,4 +14,4 @@ plots/
 *.pkl
 *.joblib
 
-.env
+.envvenv/
