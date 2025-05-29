@@ -41,10 +41,8 @@ def stock_screener_app():
     filtered = []
     for d in data:
         if (
-            d["PE Ratio"] is not None and
-            min_pe <= d["PE Ratio"] <= max_pe and
-            d["EPS"] is not None and
-            d["EPS"] >= min_eps and 
+            (d["PE Ratio"] is None or min_pe <= d["PE Ratio"] <= max_pe) and
+            (d["EPS"] is None or d["EPS"] >= min_eps) and
             d["Price"] is not None and
             min_price <= d["Price"] <= max_price and
             d["Volume"] is not None and
@@ -54,14 +52,15 @@ def stock_screener_app():
             (sector.lower() in d["Sector"].lower() if sector and d["Sector"] else True)
         ):
             mc = d["Market Cap"]
-            if cap_filter == "Large" and mc >= 10e9:
-                break
-            if cap_filter == "Mid" and (2e9 <= mc < 10e9):
-                break
-            if cap_filter == "Small" and mc < 2e9:
-                break
+            if cap_filter == "Large" and mc < 10e9:
+                continue
+            if cap_filter == "Mid" and not (2e9 <= mc < 10e9):
+                continue
+            if cap_filter == "Small" and mc >= 2e9:
+                continue
             filtered.append(d)
             
+    
     df = pd.DataFrame(filtered)
     
     if df.empty:

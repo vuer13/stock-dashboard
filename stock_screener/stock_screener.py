@@ -42,4 +42,5 @@ def fetch_stock_info(tickers):
         return results
 
     except Exception as e:
+        st.error(f"Error fetching data: {e}")
         return []
